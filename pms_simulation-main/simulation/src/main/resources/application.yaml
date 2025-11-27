@@ -1,6 +1,9 @@
 spring:
   application:
     name: simulation
+  mvc:
+    async:
+      request-timeout: -1  
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -18,3 +21,11 @@ spring:
 fmp:
   api:
     key: "tLsLKxYqOgUWPEtJ3aJtT6RGmf3PfiVU"
+server:
+  connection-timeout: -1
+  tomcat:
+    keep-alive-timeout: -1
+    connection-timeout: -1
+
+
+  

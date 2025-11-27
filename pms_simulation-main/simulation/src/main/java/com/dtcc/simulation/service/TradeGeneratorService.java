@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.dtcc.simulation.model.TradeEvent;
 
-
 @Service
 public class TradeGeneratorService {
 
-    private Random random = new Random();
+    private final Random random = new Random();
 
     private enum Mode { NORMAL, HYPE, PAUSE }
     private Mode currentMode = Mode.NORMAL;
@@ -28,57 +27,62 @@ public class TradeGeneratorService {
     );
 
     private final List<String> symbolList = List.of(
-            "APPLE", "TATA", "HCL", "HDFC", 
-            "META", "GOOGLE", "CANARA", 
-            "AMD", "AMAZON", "NVIDIA"
+        "APPLE", "TATA", "HCL", "HDFC",
+        "META", "GOOGLE", "CANARA",
+        "AMD", "AMAZON", "NVIDIA"
     );
+
+    private TradeEvent corruptTradeFields(TradeEvent trade) {
+
+        if (random.nextInt(20000) != 0) return trade;
+
+        int f = random.nextInt(6);
+        switch (f) {
+            case 0 -> trade.setPortfolioId(null);
+            case 1 -> trade.setTradeId(null);
+            case 2 -> trade.setSymbol(null);
+            case 3 -> trade.setSide(null);
+            case 4 -> trade.setPricePerStock(-1);
+            case 5 -> trade.setQuantity(-5);
+        }
+        return trade;
+    }
 
     public TradeEvent generateTrade() {
 
         speed();
 
-        
         TradeEvent trade = new TradeEvent();
-  
-
-        trade.setPortfolio_Id(pList.get(random.nextInt(pList.size())));
-
-        trade.setTrade_Id(UUID.randomUUID());
-
+        trade.setPortfolioId(pList.get(random.nextInt(pList.size())));
+        trade.setTradeId(UUID.randomUUID());
         trade.setSymbol(symbolList.get(random.nextInt(symbolList.size())));
-
         trade.setSide(random.nextBoolean() ? "BUY" : "SELL");
+        trade.setPricePerStock(180 + random.nextDouble() * 20);
+        trade.setQuantity(10 + random.nextInt(490));
 
-        trade.setPrice_Per_Stock(180 + random.nextDouble() * 20);
-
-        trade.setQuantity(10 + random.nextInt(490)); 
-
-        //trade.setTimestamp(DateTimeFormatter.ISO_INSTANT.format(Instant.now()));
         long hoursBack = 1 + random.nextInt(48);
-        LocalDateTime pastTime = LocalDateTime.now().minusHours(hoursBack);
-        trade.setTimestamp(pastTime);
+        trade.setTimestamp(LocalDateTime.now().minusHours(hoursBack));
 
-        return trade;
+        return corruptTradeFields(trade);
     }
 
     private void speed() {
-
         long now = System.currentTimeMillis();
 
         if (now >= modeEndTime) {
-            switch (currentMode) { // it will start with normal then move to hype then pause
+            switch (currentMode) {
                 case NORMAL -> currentMode = Mode.HYPE;
-                case HYPE   -> currentMode = Mode.PAUSE;
-                case PAUSE  -> currentMode = Mode.NORMAL;
+                case HYPE -> currentMode = Mode.PAUSE;
+                case PAUSE -> currentMode = Mode.NORMAL;
             }
-            modeEndTime = now + 3000 + random.nextInt(2000); // now = 1732612345000 random.nextInt(2000) = 846 ,modeEndTime = 1732612345000 + 3000 + 846= 173261234884
+            modeEndTime = now + 3000 + random.nextInt(2000);
         }
 
         try {
             switch (currentMode) {
-                case NORMAL -> Thread.sleep(100); 
-                case HYPE   -> Thread.sleep(5);    
-                case PAUSE  -> Thread.sleep(500); 
+                case NORMAL -> Thread.sleep(100);
+                case HYPE -> Thread.sleep(5);
+                case PAUSE -> Thread.sleep(500);
             }
         } catch (InterruptedException ignored) {}
     }
