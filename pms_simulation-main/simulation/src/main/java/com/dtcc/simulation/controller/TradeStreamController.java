@@ -38,7 +38,6 @@ public class TradeStreamController {
                             .name("trade")
                             .data(event));
 
-                    // 🔥 Invisible SSE heartbeat every 10 seconds
                     if (System.currentTimeMillis() - lastHeartbeat > 10000) {
                         emitter.send(":\n\n"); // <-- hidden keepalive
                         lastHeartbeat = System.currentTimeMillis();
