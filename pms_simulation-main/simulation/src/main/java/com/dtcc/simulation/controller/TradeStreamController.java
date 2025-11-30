@@ -1,6 +1,5 @@
 package com.dtcc.simulation.controller;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -14,8 +13,8 @@ import com.dtcc.simulation.service.TradeGeneratorService;
 @RestController
 public class TradeStreamController {
 
-    private final TradeGeneratorService generator;
-    private final ExecutorService executor = Executors.newCachedThreadPool();
+    private  TradeGeneratorService generator;
+    private  ExecutorService executor = Executors.newCachedThreadPool();
 
     public TradeStreamController(TradeGeneratorService generator) {
         this.generator = generator;
@@ -33,19 +32,16 @@ public class TradeStreamController {
                 while (true) {
 
                     TradeEvent event = generator.generateTrade();
-
                     emitter.send(SseEmitter.event()
                             .name("trade")
                             .data(event));
 
                     if (System.currentTimeMillis() - lastHeartbeat > 10000) {
-                        emitter.send(":\n\n"); // <-- hidden keepalive
+                        emitter.send("\n");
                         lastHeartbeat = System.currentTimeMillis();
                     }
                 }
 
-            } catch (IOException e) {
-                emitter.completeWithError(e);
             } catch (Exception e) {
                 emitter.completeWithError(e);
             }
