@@ -2,7 +2,8 @@ package com.dtcc.simulation.service;
 
 import java.util.Random;
 import org.springframework.stereotype.Service;
-import com.dtcc.simulation.proto.TradeEventOuterClass;
+import com.dtcc.simulation.proto.TradeEventProto;
+import com.google.protobuf.Timestamp;
 import jakarta.annotation.PostConstruct;
 
 @Service
@@ -37,9 +38,8 @@ public class TradeSimulationService {
 
                 var event = generator.generateTrade();
 
-                TradeEventOuterClass.TradeEvent.Builder builder =
-                        TradeEventOuterClass.TradeEvent.newBuilder()
-                                .setPortfolioId(event.getPortfolioId().toString());
+                TradeEventProto.Builder builder = TradeEventProto.newBuilder()
+                        .setPortfolioId(event.getPortfolioId().toString());
 
                 if (event.getTradeId() != null)
                     builder.setTradeId(event.getTradeId().toString());
@@ -57,9 +57,11 @@ public class TradeSimulationService {
                     builder.setQuantity(event.getQuantity());
 
                 if (event.getTimestamp() != null)
-                    builder.setTimestamp(event.getTimestamp().toEpochSecond(java.time.ZoneOffset.UTC));
+                    builder.setTimestamp(Timestamp.newBuilder()
+                        .setSeconds(event.getTimestamp().toEpochSecond(java.time.ZoneOffset.UTC))
+                        .build());
 
-                TradeEventOuterClass.TradeEvent proto = builder.build();
+                TradeEventProto proto = builder.build();
 
                 producer.publish(proto);
 

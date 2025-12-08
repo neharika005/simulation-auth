@@ -20,8 +20,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TradeGeneratorService {
 
-    private PortfolioIdRepository portfolioRepo;
-    private SymbolRepository symbolRepo;
+    private final PortfolioIdRepository portfolioRepo;
+    private final SymbolRepository symbolRepo;
 
     private Random random = new Random();
 
