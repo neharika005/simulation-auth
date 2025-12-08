@@ -1,0 +1,53 @@
+server:
+    port: 8090
+spring:
+  application:
+    name: simulation
+
+
+
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    properties:
+      schema.registry.url: http://localhost:8081
+      specific.protobuf.value.type: com.dtcc.simulation.proto.TradeEventOuterClass$TradeEvent
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufSerializer
+
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: io.confluent.kafka.serializers.protobuf.KafkaProtobufDeserializer
+
+    listener:
+      ack-mode: record
+
+  datasource:
+    url: jdbc:h2:mem:simulation-db
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+
+  sql:
+    init:
+      mode: always      
+      continue-on-error: true
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+app:
+  kafka:
+    trade-topic: trade-events
+
+portfolio:
+  service:
+    url: http://localhost:8095
+
