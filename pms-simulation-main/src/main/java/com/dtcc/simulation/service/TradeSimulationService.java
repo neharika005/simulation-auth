@@ -8,13 +8,13 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class TradeSimulationService {
 
-    private  TradeGeneratorService generator;
-    private  RabbitStreamProducer producer;
-    private  Random random = new Random();
+    private TradeGeneratorService generator;
+    private RabbitStreamProducer producer;
+    private Random random = new Random();
 
     private enum SpeedMode {
         SLOW(200), FAST(80), VERY_FAST(20), PAUSE(2000);
-        final long delayMs;
+        long delayMs;
         SpeedMode(long d) { this.delayMs = d; }
     }
 

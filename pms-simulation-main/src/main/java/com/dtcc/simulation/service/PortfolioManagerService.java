@@ -11,8 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class PortfolioManagerService {
 
-    private final PortfolioClientService portfolioClientService;
-    private final PortfolioIdRepository portfolioIdRepository;
+    private PortfolioClientService portfolioClientService;
+    private PortfolioIdRepository portfolioIdRepository;
 
     public PortfolioManagerService(PortfolioClientService portfolioClientService,
                                    PortfolioIdRepository portfolioIdRepository) {
@@ -22,10 +22,8 @@ public class PortfolioManagerService {
 
     public UUID createAndStorePortfolio(PortfolioCreateRequest request) {
 
-        // Step 1: Call Portfolio Service
         UUID newPortfolioId = portfolioClientService.createPortfolio(request);
 
-        // Step 2: Save in simulation DB
         PortfolioId portfolioId = new PortfolioId(newPortfolioId);
         portfolioIdRepository.save(portfolioId);
 

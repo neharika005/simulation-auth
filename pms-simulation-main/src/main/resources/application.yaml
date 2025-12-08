@@ -4,8 +4,6 @@ spring:
   application:
     name: simulation
 
-
-
   kafka:
     bootstrap-servers: localhost:9092
 

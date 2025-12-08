@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/simulation")
 public class PortfolioSimulationController {
 
-    private final PortfolioManagerService portfolioManagerService;
+    private PortfolioManagerService portfolioManagerService;
 
     public PortfolioSimulationController(PortfolioManagerService portfolioManagerService) {
         this.portfolioManagerService = portfolioManagerService;

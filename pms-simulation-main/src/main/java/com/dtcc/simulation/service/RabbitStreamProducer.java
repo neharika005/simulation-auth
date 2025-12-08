@@ -12,10 +12,10 @@ import jakarta.annotation.PostConstruct;
 @Service
 public class RabbitStreamProducer {
 
-    private static  int PORT = 5552;
-    private static  int MAX_RETRIES = 10;
-    private static  int RETRY_DELAY_MS = 3000;
-    private static  String STREAM_NAME = "trade-stream";
+    private  int PORT = 5552;
+    private  int MAX_RETRIES = 10;
+    private  int RETRY_DELAY_MS = 3000;
+    private  String STREAM_NAME = "trade-stream";
 
     private Environment env;
     private Producer producer;

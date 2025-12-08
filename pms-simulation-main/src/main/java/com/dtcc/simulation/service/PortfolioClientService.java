@@ -13,7 +13,7 @@ import java.util.UUID;
 @Service
 public class PortfolioClientService {
 
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Value("${portfolio.service.url}")
     private String portfolioServiceUrl;
@@ -24,14 +24,11 @@ public class PortfolioClientService {
 
     public UUID createPortfolio(PortfolioCreateRequest request) {
 
-        // The external UUID generating service endpoint:
         String url = portfolioServiceUrl + "/api/portfolio/create";
 
-        // Make the POST call
         ResponseEntity<PortfolioCreateResponse> response =
                 restTemplate.postForEntity(url, request, PortfolioCreateResponse.class);
 
-        // Return portfolioId from response
         return response.getBody().getPortfolioId();
     }
 }
