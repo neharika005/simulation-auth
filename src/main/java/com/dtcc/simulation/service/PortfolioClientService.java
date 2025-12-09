@@ -2,6 +2,7 @@ package com.dtcc.simulation.service;
 
 import com.dtcc.simulation.model.PortfolioCreateRequest;
 import com.dtcc.simulation.model.PortfolioCreateResponse;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +18,6 @@ public class PortfolioClientService {
 
     @Value("${portfolio.service.url}")
     private String portfolioServiceUrl;
-
-    public PortfolioClientService(RestTemplateBuilder builder) {
-        this.restTemplate = builder.build();
-    }
 
     public UUID createPortfolio(PortfolioCreateRequest request) {
 
