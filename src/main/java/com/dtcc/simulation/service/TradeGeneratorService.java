@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled; 
 import org.springframework.stereotype.Service;
 
 import com.dtcc.simulation.entity.PortfolioId;
@@ -20,29 +22,49 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TradeGeneratorService {
 
+    @Autowired
     private PortfolioIdRepository portfolioRepo;
+    @Autowired
     private SymbolRepository symbolRepo;
 
-    private Random random = new Random();
+    private final Random random = new Random(); 
 
     private List<UUID> cachedPortfolios;
     private List<String> cachedSymbols;
 
     @PostConstruct
-    public void loadDataFromDB() {
-        cachedPortfolios = portfolioRepo.findAll()
+    public void loadInitialDataFromDB() {
+        this.cachedSymbols = symbolRepo.findAll()
+                .stream()
+                .map(Symbol::getSymbol)
+                .toList();
+
+        updatePortfolioIdCache(); 
+        
+        System.out.println("Initial Cache Load Complete. Symbols: " + cachedSymbols.size());
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void updatePortfolioIdCache() {
+        System.out.println("--- Starting Portfolio ID cache update: " + LocalDateTime.now() + " ---");
+
+        List<UUID> newPortfolios = portfolioRepo.findAll()
                 .stream()
                 .map(PortfolioId::getPortfolio_id)
                 .toList();
 
-        cachedSymbols = symbolRepo.findAll()
-                .stream()
-                .map(Symbol::getSymbol)
-                .toList();
+        this.cachedPortfolios = newPortfolios; 
+        
+        System.out.println("Portfolio ID cache updated. New count: " + newPortfolios.size());
     }
+
 
     public TradeEvent generateTrade() {
 
+        if (cachedPortfolios == null || cachedPortfolios.isEmpty() || cachedSymbols == null || cachedSymbols.isEmpty()) {
+             throw new IllegalStateException("Trade generator cache is empty. Cannot generate trade.");
+        }
+        
         TradeEvent t = new TradeEvent();
 
         t.setPortfolioId(
@@ -50,11 +72,11 @@ public class TradeGeneratorService {
         );
 
         boolean missingFields = random.nextDouble() < 0.20;
-
         boolean invalidTrade = random.nextDouble() < 0.10;
 
         if (missingFields) {
-            return t;
+
+            return t; 
         }
 
         if (invalidTrade) {
@@ -87,7 +109,7 @@ public class TradeGeneratorService {
             LocalDateTime.now()
                 .minusHours(random.nextInt(24) + 1)
                 .withNano(random.nextInt(1_000_000_000))
-);
+        );
 
         return t;
     }
