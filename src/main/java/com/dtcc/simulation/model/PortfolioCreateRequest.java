@@ -12,7 +12,7 @@ import lombok.Setter;
 public class PortfolioCreateRequest {
 
     private String name;
-    private Long number;
+    private Long phoneNumber;
     private String address;
 
     

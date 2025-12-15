@@ -1,15 +1,21 @@
 package com.dtcc.simulation.service;
 
 import java.util.Random;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dtcc.simulation.proto.TradeEventProto;
 import com.google.protobuf.Timestamp;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class TradeSimulationService {
 
+    @Autowired
     private TradeGeneratorService generator;
+    @Autowired
     private RabbitStreamProducer producer;
     private Random random = new Random();
 
@@ -17,14 +23,6 @@ public class TradeSimulationService {
         SLOW(200), FAST(80), VERY_FAST(20), PAUSE(2000);
         long delayMs;
         SpeedMode(long d) { this.delayMs = d; }
-    }
-
-    public TradeSimulationService(
-            TradeGeneratorService generator,
-            RabbitStreamProducer producer
-    ) {
-        this.generator = generator;
-        this.producer = producer;
     }
 
     @PostConstruct

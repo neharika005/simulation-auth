@@ -4,21 +4,21 @@ import com.dtcc.simulation.entity.PortfolioId;
 import com.dtcc.simulation.model.PortfolioCreateRequest;
 import com.dtcc.simulation.repository.PortfolioIdRepository;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class PortfolioManagerService {
 
+    @Autowired
     private PortfolioClientService portfolioClientService;
+    @Autowired
     private PortfolioIdRepository portfolioIdRepository;
-
-    public PortfolioManagerService(PortfolioClientService portfolioClientService,
-                                   PortfolioIdRepository portfolioIdRepository) {
-        this.portfolioClientService = portfolioClientService;
-        this.portfolioIdRepository = portfolioIdRepository;
-    }
 
     public UUID createAndStorePortfolio(PortfolioCreateRequest request) {
 

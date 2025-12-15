@@ -9,7 +9,9 @@ import com.rabbitmq.stream.Message;
 import com.rabbitmq.stream.Producer;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class RabbitStreamProducer {
 
@@ -64,7 +66,6 @@ public class RabbitStreamProducer {
                 }
             }
         }
-
         throw new IllegalStateException("Failed to connect to RabbitMQ Stream after retries", lastException);
     }
 
@@ -86,6 +87,9 @@ public class RabbitStreamProducer {
         if (event == null) {
             throw new IllegalArgumentException("TradeEvent cannot be null");
         }
+
+        // PEEK THE MESSAGE BEFORE SENDING
+        // log.info("PEEK RabbitMQ Stream Message: {}", event);
 
         Message msg = producer.messageBuilder()
                 .addData(event.toByteArray())

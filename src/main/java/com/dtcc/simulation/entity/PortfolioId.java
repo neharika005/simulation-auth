@@ -2,7 +2,6 @@ package com.dtcc.simulation.entity;
 
 import java.util.UUID;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
