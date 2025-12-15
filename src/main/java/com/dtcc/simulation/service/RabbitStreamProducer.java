@@ -84,7 +84,7 @@ public class RabbitStreamProducer {
         }
 
         // PEEK THE MESSAGE BEFORE SENDING
-        // log.info("PEEK RabbitMQ Stream Message: {}", event);
+        log.info("PEEK RabbitMQ Stream Message: {}", event);
 
         Message msg = producer.messageBuilder()
                 .addData(event.toByteArray())
