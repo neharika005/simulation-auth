@@ -1,8 +1,9 @@
 package com.dtcc.simulation.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
-import com.dtcc.simulation.proto.TradeEventOuterClass;
+import com.dtcc.simulation.proto.TradeEventProto;
 import com.rabbitmq.stream.Environment;
 import com.rabbitmq.stream.Message;
 import com.rabbitmq.stream.Producer;
@@ -14,10 +15,14 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class RabbitStreamProducer {
 
-    private int PORT = 5552;
-    private int MAX_RETRIES = 10;
-    private int RETRY_DELAY_MS = 3000;
-    private String STREAM_NAME = "trade-stream";
+    @Value("${app.rabbitmq.stream.port:5552}")
+    private int PORT;
+
+    @Value("${app.rabbitmq.stream.name:trade-stream}")
+    private String STREAM_NAME;
+
+    private  int MAX_RETRIES = 10;
+    private  int RETRY_DELAY_MS = 3000;
 
     private Environment env;
     private Producer producer;
@@ -74,7 +79,7 @@ public class RabbitStreamProducer {
         }
     }
 
-    public void publish(TradeEventOuterClass.TradeEvent event) {
+    public void publish(TradeEventProto event) {
         if (producer == null) {
             throw new IllegalStateException("Producer not initialized");
         }

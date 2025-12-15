@@ -24,11 +24,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TradeGeneratorService {
 
-    @Autowired
-    private PortfolioIdRepository portfolioRepo;
-
-    @Autowired
-    private SymbolRepository symbolRepo;
+    private final PortfolioIdRepository portfolioRepo;
+    private final SymbolRepository symbolRepo;
 
     private final Random random = new Random();
 

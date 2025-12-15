@@ -49,8 +49,14 @@ spring:
 app:
   kafka:
     trade-topic: trade-events
+  rabbitmq:
+    stream:
+      host: ${RABBITMQ_HOST:localhost}
+      port: ${RABBITMQ_STREAM_PORT:5552}
+      name: ${RABBITMQ_STREAM_NAME:trade-stream}
 
 portfolio:
   service:
     url: http://localhost:8095
+  
 

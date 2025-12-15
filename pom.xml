@@ -35,7 +35,7 @@
         <dependency>
             <groupId>com.rabbitmq</groupId>
             <artifactId>stream-client</artifactId>
-          
+            
         </dependency>
 
         <dependency>
@@ -97,10 +97,11 @@
                 <version>0.6.1</version>
 
                 <configuration>
-                    <protocArtifact>
-                        com.google.protobuf:protoc:3.21.12:exe:${os.detected.classifier}
-                    </protocArtifact>
+                    <protocArtifact>com.google.protobuf:protoc:3.25.1:exe:${os.detected.classifier}</protocArtifact>
                     <outputDirectory>${project.build.directory}/generated-sources/protobuf/java</outputDirectory>
+                    <includeDirectories>
+                        <include>src/main/proto</include>
+                    </includeDirectories>
                 </configuration>
 
                 <executions>
