@@ -1,0 +1,20 @@
+2025-12-15 12:55:03.911688+05:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PORTFOLIO_INVESTOR_DETAILS" not found; SQL statement:
+select pi1_0.portfolio_id from portfolio_investor_details pi1_0 [42102-232]
+2025-12-15 15:32:06.040976+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PORTFOLIO_INVESTOR_DETAILS" not found; SQL statement:
+SELECT *
+FROM portfolio_investor_details
+WHERE portfolio_id NOT IN (
+  '3b63f299-6215-40c6-8786-54664a8f1186',
+  '4d91e55f-0a0d-4517-932c-e2ff28b67776',
+  '4f6e199b-a561-4b0f-9d28-0a4b9cf52b33',
+  '9cb8f15d-53fa-4e83-bad5-23e0fdb3d895',
+  'b8d52c7e-9a91-4e5b-87c5-6397e8c4f6e2',
+  'b98e537f-2c42-41f0-881b-3bccafb209b3',
+  'd3c12ad9-2f4c-4ad6-a1f2-87e7d5d6b9fd',
+  'e7a4c6f1-b632-4d9a-98f7-2f3c3d8a60f4'
+) [42102-232]
+2025-12-15 15:33:05.490897+05:30 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]PORTFOLIO_ID"; expected "PREPARE"; SQL statement:
+PORTFOLIO_ID [42001-232]

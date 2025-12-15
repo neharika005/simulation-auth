@@ -6,9 +6,9 @@ import com.dtcc.simulation.proto.TradeEventOuterClass;
 import com.rabbitmq.stream.Environment;
 import com.rabbitmq.stream.Message;
 import com.rabbitmq.stream.Producer;
-import lombok.extern.slf4j.Slf4j;
 
 import jakarta.annotation.PostConstruct;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -84,7 +84,7 @@ public class RabbitStreamProducer {
         }
 
         // PEEK THE MESSAGE BEFORE SENDING
-        log.info("PEEK RabbitMQ Stream Message: {}", event);
+        // log.info("PEEK RabbitMQ Stream Message: {}", event);
 
         Message msg = producer.messageBuilder()
                 .addData(event.toByteArray())
