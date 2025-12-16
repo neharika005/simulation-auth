@@ -1,8 +1,8 @@
-CREATE TABLE portfolio_id(
-    portfolio_id CHAR(36) PRIMARY KEY
+create table "portfolio_id" (
+   "portfolio_id" uuid primary key
 );
 
 
-CREATE TABLE symbol(
-    symbol varchar(255) PRIMARY KEY
+create table "symbol" (
+   "symbol" varchar(255) primary key
 );

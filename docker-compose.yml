@@ -18,12 +18,33 @@ services:
       - "15672:15672"
       - "5552:5552"
 
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: pms
+      POSTGRES_PASSWORD: pms
+      POSTGRES_DB: pmsdb
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pms -d pmsdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   # simulation:
   #   build: .
   #   container_name: simulation-app
   #   depends_on:
   #     - rabbitmq
+  #     - postgres
   #   environment:
   #     RABBITMQ_HOST: rabbitmq
   #   ports:
   #     - "8090:8090"
+
+volumes:
+  pgdata:

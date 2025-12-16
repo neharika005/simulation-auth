@@ -23,20 +23,15 @@ spring:
       ack-mode: record
 
   datasource:
-    url: jdbc:h2:file:./data/simulation-db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-    driverClassName: org.h2.Driver
-    username: sa
-    password:
+    url: jdbc:postgresql://localhost:5432/pmsdb
+    driverClassName: org.postgresql.Driver
+    username: pms
+    password: pms
 
   sql:
     init:
-      mode: never      
+      mode: always
       continue-on-error: true
-
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
   jpa:
     hibernate:
       ddl-auto: none
