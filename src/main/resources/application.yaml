@@ -52,6 +52,6 @@ app:
 
 portfolio:
   service:
-    url: http://localhost:8095
-  
+    url: http://localhost:8080/simulation
+
 
