@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SimulationApplication {
     public static void main(String[] args) {
+        System.out.println(">>> SIMULATION MAIN STARTED");
         SpringApplication.run(SimulationApplication.class, args);
     }
 }
