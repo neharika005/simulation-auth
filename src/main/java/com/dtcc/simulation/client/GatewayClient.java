@@ -1,29 +1,27 @@
 package com.dtcc.simulation.client;
 
+import org.springframework.security.oauth2.client.web.reactive.function.client.ServletOAuth2AuthorizedClientExchangeFilterFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import com.dtcc.simulation.auth.OAuthTokenService;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class GatewayClient {
 
-    private final OAuthTokenService tokenService;
     private final WebClient webClient;
-
-    public GatewayClient(OAuthTokenService tokenService,
-                         WebClient.Builder builder) {
-        this.tokenService = tokenService;
-        this.webClient = builder.build();
-    }
 
     public String callGatewayApi() {
 
-        String token = tokenService.getAccessToken();
-
-        return webClient.get()
-                .uri("http://localhost:8081/api/test")
-                .headers(h -> h.setBearerAuth(token))
+        return webClient
+                .get()
+                // .uri("http://api-gateway:4000/api/test")
+                .uri("http://auth:8080/actuator/health")
+                .attributes(
+                    ServletOAuth2AuthorizedClientExchangeFilterFunction
+                        .clientRegistrationId("gateway-client")
+                )
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();

@@ -1,14 +1,24 @@
 server:
-    port: 8090
+  port: 8090
+
 spring:
   application:
     name: simulation
+
   security:
     oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8080
-          jwk-set-uri: http://auth:8080/oauth2/jwks
+      client:
+        registration:
+          gateway-client:
+            provider: auth-provider
+            client-id: simulation-service
+            client-secret: secret
+            authorization-grant-type: client_credentials
+        provider:
+          auth-provider:
+            token-uri: http://host.docker.internal:8080/oauth2/token
+
+
 
   kafka:
     bootstrap-servers: localhost:9092
@@ -60,9 +70,3 @@ portfolio:
   service:
     url: http://localhost:8080/simulation
 
-auth:
-  server:
-    token-url: http://auth:8080/oauth2/token
-  client:
-    id: simulation-service
-    secret: secret
