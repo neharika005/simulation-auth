@@ -16,7 +16,7 @@ spring:
             authorization-grant-type: client_credentials
         provider:
           auth-provider:
-            token-uri: http://host.docker.internal:8080/oauth2/token
+            token-uri: http://auth:8080/oauth2/token
 
 
 
@@ -68,5 +68,6 @@ app:
 
 portfolio:
   service:
-    url: http://localhost:8080/simulation
+    url: http://auth:8080/simulation
+
 

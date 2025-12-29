@@ -1,12 +1,4 @@
-version: "3.9"
-
 services:
-  auth:
-    image: auth-auth:latest
-    container_name: auth
-    ports:
-      - "8080:8080"
-
   rabbitmq:
     image: rabbitmq:3.13-management
     container_name: rabbitmq
@@ -49,16 +41,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # simulation:
-  #   build: .
-  #   container_name: simulation-app
-  #   depends_on:
-  #     - rabbitmq
-  #     - postgres
-  #   environment:
-  #     RABBITMQ_HOST: rabbitmq
-  #   ports:
-  #     - "8090:8090"
   simulation:
     build: .
     container_name: pms-simulation
@@ -71,21 +53,11 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_STREAM_PORT: 5552
       RABBITMQ_STREAM_NAME: trade-stream
-      # Use PostgreSQL database
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pmsdb
       SPRING_DATASOURCE_USERNAME: pms
       SPRING_DATASOURCE_PASSWORD: pms
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
     ports:
       - "4000:8090"
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4000/actuator/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
 
 volumes:
   pgdata:
