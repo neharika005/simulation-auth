@@ -17,6 +17,10 @@ services:
         rabbitmq-plugins enable rabbitmq_stream &&
         rabbitmq-server
       "
+      
+    networks:
+      - pms-network
+
     healthcheck:
       test: ["CMD-SHELL", "rabbitmq-diagnostics -q ping"]
       interval: 10s
@@ -35,6 +39,10 @@ services:
       POSTGRES_DB: pmsdb
     volumes:
       - pgdata:/var/lib/postgresql/data
+
+    networks:
+      - pms-network
+
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U pms -d pmsdb"]
       interval: 5s
@@ -56,9 +64,19 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/pmsdb
       SPRING_DATASOURCE_USERNAME: pms
       SPRING_DATASOURCE_PASSWORD: pms
+
+      AUTH_SERVER_URL: http://auth:8081
+      API_GATEWAY_URL: http://pms-api-gateway:8080
     ports:
       - "4000:8090"
+    networks:
+      - pms-network
 
 volumes:
   pgdata:
   rabbitmq_data:
+
+networks:
+  pms-network:
+    external: true
+

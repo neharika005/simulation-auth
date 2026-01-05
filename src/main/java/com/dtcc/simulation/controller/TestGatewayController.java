@@ -1,6 +1,7 @@
 package com.dtcc.simulation.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dtcc.simulation.client.GatewayClient;
@@ -13,7 +14,7 @@ public class TestGatewayController {
 
     private final GatewayClient gatewayClient;
 
-    @GetMapping("/test-gateway")
+    @PostMapping("/test-gateway")
     public String testGateway() {
         return gatewayClient.callGatewayApi();
     }

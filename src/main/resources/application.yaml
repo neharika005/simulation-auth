@@ -7,6 +7,10 @@ spring:
 
   security:
     oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://auth:8081
+
       client:
         registration:
           gateway-client:
@@ -16,15 +20,12 @@ spring:
             authorization-grant-type: client_credentials
         provider:
           auth-provider:
-            token-uri: http://auth:8080/oauth2/token
-
-
+            token-uri: http://auth:8081/oauth2/token
 
   kafka:
     bootstrap-servers: localhost:9092
-
     properties:
-      schema.registry.url: http://localhost:8081
+      schema.registry.url: http://localhost:8085   # adjust if needed
       specific.protobuf.value.type: com.dtcc.simulation.proto.TradeEventOuterClass$TradeEvent
 
     producer:
@@ -40,7 +41,7 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/pmsdb
-    driverClassName: org.postgresql.Driver
+    driver-class-name: org.postgresql.Driver
     username: pms
     password: pms
 
@@ -48,18 +49,20 @@ spring:
     init:
       mode: always
       continue-on-error: true
+
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
     properties:
       hibernate:
-        format-sql: true
+        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
 app:
   kafka:
     trade-topic: trade-events
+
   rabbitmq:
     stream:
       host: ${RABBITMQ_HOST:localhost}
@@ -68,6 +71,9 @@ app:
 
 portfolio:
   service:
-    url: http://auth:8080/simulation
+    url: http://portfolio-service:8095   # ✅ FIXED
 
-
+logging:
+  level:
+    org.springframework.security.oauth2.client: TRACE
+    org.springframework.security.oauth2.server.resource: DEBUG

@@ -15,9 +15,9 @@ public class GatewayClient {
     public String callGatewayApi() {
 
         return webClient
-                .get()
-                // .uri("http://api-gateway:4000/api/test")
-                .uri("http://auth:8080/actuator/health")
+                .post()
+                 .uri("http://pms-api-gateway:8080/simulation/create")
+
                 .attributes(
                     ServletOAuth2AuthorizedClientExchangeFilterFunction
                         .clientRegistrationId("gateway-client")
